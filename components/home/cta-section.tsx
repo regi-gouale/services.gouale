@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function CTASection() {
   return (
@@ -12,11 +13,11 @@ export function CTASection() {
             Rejoignez nos clients satisfaits et créez des expériences
             inoubliables avec notre collection d'art de la table premium.
           </p>
-          <Button size="lg" variant="secondary">
-            Planifier Votre Événement
+          <Button size="lg" variant="secondary" asChild>
+            <Link href="/get-started">Planifier Votre Événement</Link>
           </Button>
         </div>
       </div>
     </section>
-  )
+  );
 }
