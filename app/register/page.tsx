@@ -61,12 +61,33 @@ export default function RegisterPage() {
   async function onSubmit(values: z.infer<typeof registerSchema>) {
     try {
       setIsLoading(true);
-      // TODO: Implement actual registration logic
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      toast.success("Inscription réussie ! Vous allez être redirigé...");
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Une erreur est survenue");
+      }
+
+      toast.success(
+        "Inscription réussie ! Vous pouvez maintenant vous connecter."
+      );
       router.push("/login");
-    } catch {
-      toast.error("L'inscription a échoué. Veuillez réessayer.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "L'inscription a échoué. Veuillez réessayer."
+      );
     } finally {
       setIsLoading(false);
     }

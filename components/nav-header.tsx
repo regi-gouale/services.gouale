@@ -9,7 +9,7 @@ export function NavHeader() {
           <span className="font-poppins text-xl font-semibold text-primary">
             Gouale
           </span>
-          <span className="text-sm">Services</span>
+          <span className="text-xs">Services</span>
         </Link>
         <nav className="hidden gap-6 md:flex">
           <Link
@@ -38,9 +38,9 @@ export function NavHeader() {
           </Link>
         </nav>
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" asChild>
+          {/* <Button variant="outline" size="sm" asChild>
             <Link href="/login">Se Connecter</Link>
-          </Button>
+          </Button> */}
           <Button size="sm" asChild>
             <Link href="/get-started">Commencer</Link>
           </Button>

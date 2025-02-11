@@ -1,7 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -35,7 +36,9 @@ const loginSchema = z.object({
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -48,12 +51,24 @@ export default function LoginPage() {
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     try {
       setIsLoading(true);
-      // TODO: Implement actual login logic
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const result = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        toast.error(
+          "La connexion a échoué. Veuillez vérifier vos identifiants."
+        );
+        return;
+      }
+
       toast.success("Connexion réussie");
-      router.push("/dashboard");
-    } catch {
-      toast.error("La connexion a échoué. Veuillez vérifier vos identifiants.");
+      router.push(callbackUrl);
+      router.refresh();
+    } catch (error) {
+      toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
     }
