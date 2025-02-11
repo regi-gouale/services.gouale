@@ -20,8 +20,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Gouale Services | Accueil",
-  description: "L'art de la table, sans les contraintes.",
+  title: "TableScape | Location d'Art de la Table",
+  description:
+    "L'art de la table, sans les contraintes. Location de vaisselle et accessoires pour vos événements.",
 };
 
 export default function RootLayout({
