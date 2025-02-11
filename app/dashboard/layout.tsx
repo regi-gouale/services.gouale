@@ -13,7 +13,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const currentPage = dashboardConfig[pathname as keyof typeof dashboardConfig];
+  const currentPagePath = pathname as keyof typeof dashboardConfig;
+  const currentPage = dashboardConfig[currentPagePath] ?? {
+    title: "Dashboard",
+    description: "Vue d'ensemble",
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -86,11 +90,9 @@ export default function DashboardLayout({
       <div className="flex-1">
         <header className="border-b bg-card px-6 py-4">
           <h1 className="text-2xl font-semibold">{currentPage.title}</h1>
-          {currentPage.description && (
-            <p className="text-sm text-muted-foreground">
-              {currentPage.description}
-            </p>
-          )}
+          <p className="text-sm text-muted-foreground">
+            {currentPage.description}
+          </p>
         </header>
         <main className="p-6">{children}</main>
       </div>

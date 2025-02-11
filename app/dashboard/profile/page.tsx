@@ -39,7 +39,7 @@ export default function ProfilePage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof profileSchema>) {
+  async function onSubmit(_values: z.infer<typeof profileSchema>) {
     try {
       // TODO: Implement profile update logic
       await new Promise((resolve) => setTimeout(resolve, 1000));

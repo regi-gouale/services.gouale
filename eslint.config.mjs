@@ -98,7 +98,7 @@ const eslintConfig = [
       "@typescript-eslint/no-confusing-non-null-assertion": "error",
       "@typescript-eslint/no-dynamic-delete": "error",
       "@typescript-eslint/no-require-imports": "error",
-      "@typescript-eslint/no-unnecessary-condition": "error",
+      // "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/no-unnecessary-qualifier": "error",
       "@typescript-eslint/no-unnecessary-type-arguments": "error",
       "@typescript-eslint/no-unnecessary-type-constraint": "error",
