@@ -11,8 +11,9 @@ export function SignOutButton() {
       size="sm"
       onClick={async () => signOut({ callbackUrl: "/" })}
       className="gap-2"
+      aria-label="Se déconnecter et retourner à l'accueil"
     >
-      <LogOut className="size-4" />
+      <LogOut className="size-4" aria-hidden="true" />
       Déconnexion
     </Button>
   );

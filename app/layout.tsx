@@ -1,24 +1,6 @@
-import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
   title: "TableScape | Location d'Art de la Table",
@@ -28,21 +10,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="fr">
-      <body
-        className={cn(
-          geistSans.className,
-          geistMono.className,
-          poppins.className,
-          "antialiased",
-          "bg-zinc-50/35"
-        )}
-      >
-        {children}
+    <html lang="fr" suppressHydrationWarning>
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <meta
+          name="description"
+          content="Location de matériel et services pour vos événements"
+        />
+      </head>
+      <body className="font-inter min-h-screen bg-background antialiased">
+        <div className="relative flex min-h-screen flex-col">
+          <div className="flex-1">{children}</div>
+        </div>
         <Toaster richColors position="top-center" />
       </body>
     </html>

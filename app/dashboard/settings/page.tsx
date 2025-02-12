@@ -21,30 +21,47 @@ export default function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between space-x-2">
+          <div
+            className="flex items-center justify-between space-x-2"
+            role="group"
+            aria-labelledby="email-notifications-label"
+          >
             <Label
               htmlFor="email-notifications"
               className="flex flex-col space-y-1"
+              id="email-notifications-label"
             >
               <span>Notifications par email</span>
               <span className="text-sm font-normal text-muted-foreground">
                 Recevez des mises à jour sur vos réservations
               </span>
             </Label>
-            <Switch id="email-notifications" defaultChecked />
+            <Switch
+              id="email-notifications"
+              defaultChecked
+              aria-describedby="email-notifications-description"
+            />
           </div>
-          <Separator />
-          <div className="flex items-center justify-between space-x-2">
+          <Separator role="separator" />
+          <div
+            className="flex items-center justify-between space-x-2"
+            role="group"
+            aria-labelledby="sms-notifications-label"
+          >
             <Label
               htmlFor="sms-notifications"
               className="flex flex-col space-y-1"
+              id="sms-notifications-label"
             >
               <span>Notifications SMS</span>
               <span className="text-sm font-normal text-muted-foreground">
                 Recevez des rappels par SMS
               </span>
             </Label>
-            <Switch id="sms-notifications" />
+            <Switch
+              id="sms-notifications"
+              aria-describedby="sms-notifications-description"
+            />
           </div>
         </CardContent>
       </Card>
@@ -55,24 +72,39 @@ export default function SettingsPage() {
           <CardDescription>Gérez vos paramètres de sécurité</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4">
+          <div
+            className="grid gap-4"
+            role="group"
+            aria-labelledby="2fa-section"
+          >
             <div>
-              <Label>Authentification à deux facteurs</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label id="2fa-section">Authentification à deux facteurs</Label>
+              <p className="text-sm text-muted-foreground" id="2fa-description">
                 Ajoutez une couche de sécurité supplémentaire à votre compte
               </p>
             </div>
-            <Button variant="outline">Configurer 2FA</Button>
+            <Button variant="outline" aria-describedby="2fa-description">
+              Configurer 2FA
+            </Button>
           </div>
-          <Separator />
-          <div className="grid gap-4">
+          <Separator role="separator" />
+          <div
+            className="grid gap-4"
+            role="group"
+            aria-labelledby="password-section"
+          >
             <div>
-              <Label>Modifier le mot de passe</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label id="password-section">Modifier le mot de passe</Label>
+              <p
+                className="text-sm text-muted-foreground"
+                id="password-description"
+              >
                 Changez régulièrement votre mot de passe pour plus de sécurité
               </p>
             </div>
-            <Button variant="outline">Changer le mot de passe</Button>
+            <Button variant="outline" aria-describedby="password-description">
+              Changer le mot de passe
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -85,14 +117,27 @@ export default function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
+          <div
+            className="grid gap-4"
+            role="group"
+            aria-labelledby="delete-account-section"
+          >
             <div>
-              <Label>Supprimer le compte</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label id="delete-account-section">Supprimer le compte</Label>
+              <p
+                className="text-sm text-muted-foreground"
+                id="delete-description"
+              >
                 Cette action est irréversible et supprimera toutes vos données
               </p>
             </div>
-            <Button variant="destructive">Supprimer mon compte</Button>
+            <Button
+              variant="destructive"
+              aria-describedby="delete-description"
+              aria-label="Supprimer définitivement mon compte"
+            >
+              Supprimer mon compte
+            </Button>
           </div>
         </CardContent>
       </Card>

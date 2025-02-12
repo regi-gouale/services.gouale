@@ -12,10 +12,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function ReservationsPage() {
   return (
     <div className="space-y-6">
-      <Tabs defaultValue="upcoming">
-        <TabsList>
-          <TabsTrigger value="upcoming">À venir</TabsTrigger>
-          <TabsTrigger value="past">Historique</TabsTrigger>
+      <Tabs defaultValue="upcoming" aria-label="Gestion des réservations">
+        <TabsList aria-label="Filtrer les réservations">
+          <TabsTrigger
+            value="upcoming"
+            aria-label="Voir les réservations à venir"
+          >
+            À venir
+          </TabsTrigger>
+          <TabsTrigger
+            value="past"
+            aria-label="Voir l'historique des réservations"
+          >
+            Historique
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="upcoming" className="space-y-4">
           <Card>
@@ -29,13 +39,19 @@ export default function ReservationsPage() {
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="flex flex-col space-y-4">
                   <div className="rounded-lg border p-4">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-foreground" role="status">
                       Aucune réservation prévue
                     </p>
                   </div>
-                  <Button>Nouvelle Réservation</Button>
+                  <Button aria-label="Créer une nouvelle réservation">
+                    Nouvelle Réservation
+                  </Button>
                 </div>
-                <Calendar mode="range" className="rounded-md border" />
+                <Calendar
+                  mode="range"
+                  className="rounded-md border"
+                  aria-label="Calendrier de sélection de dates"
+                />
               </div>
             </CardContent>
           </Card>
@@ -50,7 +66,7 @@ export default function ReservationsPage() {
             </CardHeader>
             <CardContent>
               <div className="rounded-lg border p-4">
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground" role="status">
                   Aucun historique disponible
                 </p>
               </div>

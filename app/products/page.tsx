@@ -8,7 +8,7 @@ export default function ProductsPage() {
   return (
     <>
       <NavHeader />
-      <main className="min-h-screen py-24">
+      <main className="mx-auto min-h-screen max-w-5xl py-24">
         <section className="container mx-auto px-4">
           <h1 className="mb-12 text-center text-4xl font-bold tracking-tight sm:text-5xl">
             Nos Produits

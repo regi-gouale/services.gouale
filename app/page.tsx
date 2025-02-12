@@ -9,8 +9,14 @@ import { NavHeader } from "@/components/nav-header";
 export default function Home() {
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-4"
+      >
+        Aller au contenu principal
+      </a>
       <NavHeader />
-      <main className="min-h-screen">
+      <main id="main-content" className="min-h-screen">
         <HeroSection />
         <FeaturesSection />
         <ServicesSection />
@@ -18,6 +24,14 @@ export default function Home() {
         <CTASection />
         <ContactSection />
       </main>
+      <footer className="bg-card py-8" role="contentinfo">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+          <p>
+            &copy; {new Date().getFullYear()} Gouale Services. Tous droits
+            réservés.
+          </p>
+        </div>
+      </footer>
     </>
   );
 }

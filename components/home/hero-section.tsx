@@ -11,14 +11,18 @@ import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[80vh] overflow-hidden bg-gradient-to-b from-background to-muted/20">
-      <Carousel className="size-full">
+    <section
+      className="relative min-h-[80vh] overflow-hidden bg-gradient-to-b from-background to-muted/20"
+      role="region"
+      aria-label="Hero section"
+    >
+      <Carousel className="size-full" aria-label="Images de présentation">
         <CarouselContent className="h-full">
           <CarouselItem className="relative h-[80vh] w-full">
             <div className="absolute inset-0">
               <Image
                 src="/hero-image.webp"
-                alt="Arrangement élégant d'art de la table"
+                alt="Table élégamment décorée avec des éléments raffinés"
                 fill
                 className="object-cover opacity-20"
                 priority
@@ -38,10 +42,17 @@ export function HeroSection() {
                   raffinée
                 </p>
                 <div className="flex justify-center gap-4">
-                  <Link href="/products">
+                  <Link
+                    href="/products"
+                    aria-label="Voir notre catalogue de produits"
+                  >
                     <Button size="lg">Découvrir Nos Produits</Button>
                   </Link>
-                  <Button variant="outline" size="lg">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    aria-label="Plus d'informations sur nos services"
+                  >
                     En Savoir Plus
                   </Button>
                 </div>
@@ -52,7 +63,7 @@ export function HeroSection() {
             <div className="absolute inset-0">
               <Image
                 src="/hero-image-2.jpg"
-                alt="Décoration de table élégante"
+                alt="Décoration de table élégante avec une mise en place sophistiquée"
                 fill
                 className="object-cover opacity-20"
                 priority
@@ -71,10 +82,17 @@ export function HeroSection() {
                   Une attention particulière pour chaque événement
                 </p>
                 <div className="flex justify-center gap-4">
-                  <Link href="/products">
+                  <Link
+                    href="/products"
+                    aria-label="Voir notre catalogue de produits"
+                  >
                     <Button size="lg">Découvrir Nos Produits</Button>
                   </Link>
-                  <Button variant="outline" size="lg">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    aria-label="Nous contacter pour plus d'informations"
+                  >
                     Nous Contacter
                   </Button>
                 </div>
