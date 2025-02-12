@@ -14,26 +14,38 @@ export function HeroSection() {
     <section
       className="relative min-h-[80vh] overflow-hidden bg-gradient-to-b from-background to-muted/20"
       role="region"
-      aria-label="Hero section"
+      aria-labelledby="hero-title"
     >
-      <Carousel className="size-full" aria-label="Images de présentation">
+      <Carousel
+        className="size-full"
+        aria-label="Images de présentation"
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+      >
         <CarouselContent className="h-full">
-          <CarouselItem className="relative h-[80vh] w-full">
+          <CarouselItem className="relative h-[80vh] w-full transition-opacity">
             <div className="absolute inset-0">
               <Image
                 src="/hero-image.webp"
                 alt="Table élégamment décorée avec des éléments raffinés"
                 fill
-                className="object-cover opacity-20"
+                className="object-cover opacity-20 transition-opacity"
                 priority
+                sizes="100vw"
+                quality={90}
               />
             </div>
             <div className="relative z-10 flex h-full items-center justify-center">
               <div className="container px-4 text-center">
-                <h1 className="font-poppins mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+                <h1
+                  id="hero-title"
+                  className="font-poppins mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
+                >
                   Sublimez Vos Événements avec
                   <br />
-                  <span className="text-primary">
+                  <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                     Un Art de la Table Exquis
                   </span>
                 </h1>
@@ -41,17 +53,23 @@ export function HeroSection() {
                   Transformez vos occasions spéciales avec notre collection
                   raffinée
                 </p>
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                   <Link
                     href="/products"
                     aria-label="Voir notre catalogue de produits"
                   >
-                    <Button size="lg">Découvrir Nos Produits</Button>
+                    <Button
+                      size="lg"
+                      className="w-full transition-transform hover:scale-105 sm:w-auto"
+                    >
+                      Découvrir Nos Produits
+                    </Button>
                   </Link>
                   <Button
                     variant="outline"
                     size="lg"
                     aria-label="Plus d'informations sur nos services"
+                    className="w-full transition-transform hover:scale-105 sm:w-auto"
                   >
                     En Savoir Plus
                   </Button>
@@ -59,14 +77,16 @@ export function HeroSection() {
               </div>
             </div>
           </CarouselItem>
-          <CarouselItem className="relative h-[80vh] w-full">
+          <CarouselItem className="relative h-[80vh] w-full transition-opacity">
             <div className="absolute inset-0">
               <Image
                 src="/hero-image-2.jpg"
                 alt="Décoration de table élégante avec une mise en place sophistiquée"
                 fill
-                className="object-cover opacity-20"
+                className="object-cover opacity-20 transition-opacity"
                 priority
+                sizes="100vw"
+                quality={90}
               />
             </div>
             <div className="relative z-10 flex h-full items-center justify-center">
@@ -74,24 +94,30 @@ export function HeroSection() {
                 <h1 className="font-poppins mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
                   Des Moments Inoubliables
                   <br />
-                  <span className="text-primary">
+                  <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                     Dans les Moindres Détails
                   </span>
                 </h1>
                 <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
                   Une attention particulière pour chaque événement
                 </p>
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                   <Link
                     href="/products"
                     aria-label="Voir notre catalogue de produits"
                   >
-                    <Button size="lg">Découvrir Nos Produits</Button>
+                    <Button
+                      size="lg"
+                      className="w-full transition-transform hover:scale-105 sm:w-auto"
+                    >
+                      Découvrir Nos Produits
+                    </Button>
                   </Link>
                   <Button
                     variant="outline"
                     size="lg"
                     aria-label="Nous contacter pour plus d'informations"
+                    className="w-full transition-transform hover:scale-105 sm:w-auto"
                   >
                     Nous Contacter
                   </Button>
@@ -101,8 +127,14 @@ export function HeroSection() {
           </CarouselItem>
         </CarouselContent>
         <div className="hidden md:block">
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
+          <CarouselPrevious
+            className="left-4 transition-transform hover:scale-105"
+            aria-label="Voir la diapositive précédente"
+          />
+          <CarouselNext
+            className="right-4 transition-transform hover:scale-105"
+            aria-label="Voir la diapositive suivante"
+          />
         </div>
       </Carousel>
     </section>

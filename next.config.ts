@@ -1,11 +1,19 @@
-import { withSentryConfig } from "@sentry/nextjs";
+// import { withSentryConfig } from "@sentry/nextjs";
+// import type { NextConfig } from "next";
+
+// const nextConfig: NextConfig = {
+//   output: "standalone",
+//   images: {
+//     domains: ["images.unsplash.com"],
+//   },
+// };
+
+// export default withSentryConfig(nextConfig);
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  images: {
-    domains: ["images.unsplash.com"],
-  },
+  /* config options here */
 };
 
-export default withSentryConfig(nextConfig);
+export default nextConfig;

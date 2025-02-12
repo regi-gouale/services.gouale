@@ -1,6 +1,14 @@
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "TableScape | Location d'Art de la Table",
@@ -25,7 +33,12 @@ export default function RootLayout({
           content="Location de matériel et services pour vos événements"
         />
       </head>
-      <body className="font-inter min-h-screen bg-background antialiased">
+      <body
+        className={cn(
+          "font-inter min-h-screen bg-background antialiased",
+          poppins.variable
+        )}
+      >
         <div className="relative flex min-h-screen flex-col">
           <div className="flex-1">{children}</div>
         </div>

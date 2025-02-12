@@ -116,7 +116,7 @@ const Carousel = React.forwardRef<
       api.on("select", onSelect);
 
       return () => {
-        api.off("select", onSelect);
+        api?.off("select", onSelect);
       };
     }, [api, onSelect]);
 
@@ -126,7 +126,8 @@ const Carousel = React.forwardRef<
           carouselRef,
           api: api,
           opts,
-          orientation: opts?.axis === "y" ? "vertical" : "horizontal",
+          orientation:
+            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
           canScrollPrev,
@@ -205,7 +206,7 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full",
+        "absolute  h-8 w-8 rounded-full",
         orientation === "horizontal"
           ? "-left-12 top-1/2 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -213,11 +214,10 @@ const CarouselPrevious = React.forwardRef<
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
-      aria-label="Diapositive précédente"
       {...props}
     >
-      <ArrowLeft className="size-4" aria-hidden="true" />
-      <span className="sr-only">Diapositive précédente</span>
+      <ArrowLeft className="h-4 w-4" />
+      <span className="sr-only">Previous slide</span>
     </Button>
   );
 });
@@ -243,11 +243,10 @@ const CarouselNext = React.forwardRef<
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
-      aria-label="Diapositive suivante"
       {...props}
     >
-      <ArrowRight className="size-4" aria-hidden="true" />
-      <span className="sr-only">Diapositive suivante</span>
+      <ArrowRight className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
     </Button>
   );
 });

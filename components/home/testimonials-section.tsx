@@ -15,14 +15,17 @@ export function TestimonialCard({
   rating,
 }: TestimonialCardProps) {
   return (
-    <Card>
+    <Card className="group transition-all hover:scale-105">
       <CardContent className="flex flex-col gap-4 p-6">
-        <div className="flex gap-1">
+        <div className="flex gap-1" role="img" aria-label={`Note de ${rating} sur 5`}>
           {Array.from({ length: rating }).map((_, i) => (
-            <Star key={i} className="size-5 fill-primary text-primary" />
+            <Star
+              key={i}
+              className="size-5 fill-primary text-primary transition-colors group-hover:fill-primary/90 group-hover:text-primary/90"
+            />
           ))}
         </div>
-        <blockquote className="text-lg">{quote}</blockquote>
+        <blockquote className="text-lg">"{quote}"</blockquote>
         <div>
           <div className="font-semibold">{name}</div>
           <div className="text-sm text-muted-foreground">{role}</div>
@@ -34,12 +37,23 @@ export function TestimonialCard({
 
 export function TestimonialsSection() {
   return (
-    <section id="testimonials" className="bg-muted/50 py-24">
-      <div className="container mx-auto flex max-w-5xl flex-col items-center px-4 ">
-        <h2 className="font-poppins mb-12 text-center text-3xl font-bold tracking-tight sm:text-4xl">
+    <section 
+      id="testimonials" 
+      className="bg-muted/50 py-24"
+      aria-labelledby="testimonials-title"
+    >
+      <div className="container mx-auto flex max-w-5xl flex-col items-center px-4">
+        <h2 
+          id="testimonials-title"
+          className="font-poppins mb-12 text-center text-3xl font-bold tracking-tight sm:text-4xl"
+        >
           Avis de Nos Clients
         </h2>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div 
+          className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+          role="region"
+          aria-label="Témoignages clients"
+        >
           <TestimonialCard
             name="Sophie Martin"
             role="Organisatrice d'Événements"

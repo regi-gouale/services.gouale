@@ -22,7 +22,8 @@ const formSchema = z.object({
   email: z.string().email("Veuillez saisir une adresse e-mail valide"),
   message: z
     .string()
-    .min(10, "Le message doit contenir au moins 10 caractères"),
+    .min(10, "Le message doit contenir au moins 10 caractères")
+    .max(500, "Le message ne doit pas dépasser 500 caractères"),
 });
 
 export function ContactForm() {
@@ -37,8 +38,11 @@ export function ContactForm() {
 
   async function onSubmit(_values: z.infer<typeof formSchema>) {
     try {
-      // TODO: Implement form submission logic
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      toast.success(
+        "Message envoyé avec succès ! Nous vous répondrons bientôt."
+      );
       form.reset();
     } catch {
       toast.error("Une erreur s'est produite. Veuillez réessayer plus tard.");
@@ -47,7 +51,11 @@ export function ContactForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+        aria-label="Formulaire de contact"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -55,9 +63,15 @@ export function ContactForm() {
             <FormItem>
               <FormLabel>Nom</FormLabel>
               <FormControl>
-                <Input placeholder="Jean Dupont" {...field} />
+                <Input
+                  placeholder="Jean Dupont"
+                  {...field}
+                  aria-describedby={
+                    form.formState.errors.name ? "name-error" : undefined
+                  }
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage id="name-error" />
             </FormItem>
           )}
         />
@@ -68,9 +82,16 @@ export function ContactForm() {
             <FormItem>
               <FormLabel>E-mail</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="jean@exemple.fr" {...field} />
+                <Input
+                  type="email"
+                  placeholder="jean@exemple.fr"
+                  {...field}
+                  aria-describedby={
+                    form.formState.errors.email ? "email-error" : undefined
+                  }
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage id="email-error" />
             </FormItem>
           )}
         />
@@ -83,16 +104,26 @@ export function ContactForm() {
               <FormControl>
                 <Textarea
                   placeholder="Parlez-nous de votre événement..."
-                  className="min-h-[120px]"
+                  className="min-h-[120px] resize-y"
+                  maxLength={500}
                   {...field}
+                  aria-describedby={
+                    form.formState.errors.message ? "message-error" : undefined
+                  }
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage id="message-error" />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          Envoyer le Message
+        <Button
+          type="submit"
+          className="w-full transition-transform hover:scale-105"
+          disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting
+            ? "Envoi en cours..."
+            : "Envoyer le Message"}
         </Button>
       </form>
     </Form>

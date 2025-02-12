@@ -1,48 +1,46 @@
-import { fixupConfigRules } from "@eslint/compat";
+import fixupConfigRules from "@eslint/compat";
 import { FlatCompat } from "@eslint/eslintrc";
 import pluginJs from "@eslint/js";
 import hooksPlugin from "eslint-plugin-react-hooks";
 import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
 import tailwind from "eslint-plugin-tailwindcss";
 import globals from "globals";
+import { dirname } from "path";
 import tseslint from "typescript-eslint";
+import { fileURLToPath } from "url";
 
-const compat = new FlatCompat();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
 
 const eslintConfig = [
-  { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
-  { languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } } },
+  { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx,mdx}"] },
+  { languageOptions: { parserOptions: { ecmafeatures: { jsx: true } } } },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   {
     languageOptions: {
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        ecmaVersion: 2021,
-        project: "tsconfig.json",
+        ecmaVersion: 2022,
+        project: "./tsconfig.json",
         sourceType: "module",
       },
     },
   },
-  // Typescript
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
-  // Tailwind
   ...tailwind.configs["flat/recommended"],
-  // React
   ...fixupConfigRules(pluginReactConfig),
   {
-    plugins: {
-      "react-hooks": hooksPlugin,
-    },
+    plugins: { "react-hooks": hooksPlugin },
     rules: hooksPlugin.configs.recommended.rules,
   },
-  // NextJS
-  {
-    ignores: [".next/"],
-  },
+  { ignores: [".next/**/*"] },
   ...fixupConfigRules(compat.extends("plugin:@next/next/core-web-vitals")),
-  // Rules config
   {
     rules: {
       "react/react-in-jsx-scope": 0,
@@ -98,7 +96,7 @@ const eslintConfig = [
       "@typescript-eslint/no-confusing-non-null-assertion": "error",
       "@typescript-eslint/no-dynamic-delete": "error",
       "@typescript-eslint/no-require-imports": "error",
-      // "@typescript-eslint/no-unnecessary-condition": "error",
+      "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/no-unnecessary-qualifier": "error",
       "@typescript-eslint/no-unnecessary-type-arguments": "error",
       "@typescript-eslint/no-unnecessary-type-constraint": "error",
