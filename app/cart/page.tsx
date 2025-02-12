@@ -1,3 +1,5 @@
+"use client";
+
 import { NavHeader } from "@/components/nav-header";
 import { Card } from "@/components/ui/card";
 

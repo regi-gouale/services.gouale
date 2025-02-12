@@ -75,14 +75,13 @@ export function HeroSection() {
                       Nos Produits
                     </Button>
                   </Link>
-                  <Button
-                    variant="outline"
-                    size="lg"
+                  <Link
+                    href="/#services"
                     aria-label="Plus d'informations sur nos services"
-                    className="w-full transition-transform hover:scale-105 sm:w-auto"
+                    className="w-full transition-transform hover:scale-105 sm:w-auto text-center px-4 py-2 rounded-lg bg-primary-foreground shadow-md text-sm"
                   >
                     En Savoir Plus
-                  </Button>
+                  </Link>
                 </div>
               </div>
             </div>

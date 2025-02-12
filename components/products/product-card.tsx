@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useCart } from "@/lib/cart";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -21,15 +22,20 @@ type ProductProps = {
   image: string;
 };
 
-export function ProductCard({ name, description, price, image }: ProductProps) {
+export function ProductCard({
+  id,
+  name,
+  description,
+  price,
+  image,
+}: ProductProps) {
   const [isAdding, setIsAdding] = useState(false);
+  const { addItem } = useCart();
 
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // Add success notification logic here
+      addItem(id);
       toast.success(`"${name}" a été ajouté au panier`);
     } finally {
       setIsAdding(false);

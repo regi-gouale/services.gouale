@@ -26,7 +26,7 @@ export default function ProductsPage() {
   return (
     <>
       <NavHeader />
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 py-16 max-w-5xl">
         <div className="mb-12 text-center">
           <h1 className="font-poppins mb-4 text-4xl font-bold">Nos Produits</h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">

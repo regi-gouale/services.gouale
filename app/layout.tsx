@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { CartProvider } from "@/lib/cart";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
@@ -34,14 +34,13 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={cn(
-          "font-inter min-h-screen bg-background antialiased",
-          poppins.variable
-        )}
+        className={`min-h-screen bg-background antialiased ${poppins.variable}`}
       >
-        <div className="relative flex min-h-screen flex-col">
-          <div className="flex-1">{children}</div>
-        </div>
+        <CartProvider>
+          <div className="relative flex min-h-screen flex-col">
+            <div className="flex-1">{children}</div>
+          </div>
+        </CartProvider>
         <Toaster richColors position="top-center" />
       </body>
     </html>

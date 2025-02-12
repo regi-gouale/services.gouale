@@ -1,3 +1,5 @@
+"use client";
+
 import { ContactSection } from "@/components/home/contact-section";
 import { CTASection } from "@/components/home/cta-section";
 import { FeaturesSection } from "@/components/home/features-section";

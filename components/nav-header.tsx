@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/lib/cart";
 import { cn } from "@/lib/utils";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import { useState } from "react";
 
 export function NavHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { totalItems } = useCart();
 
   return (
     <header
@@ -123,7 +125,11 @@ export function NavHeader() {
                 <span className="relative flex items-center gap-2">
                   <ShoppingCart className="size-5" />
                   Panier
-                  <span className="absolute inset-x-0 -bottom-1 h-0.5 scale-x-0 bg-foreground transition-transform group-hover:scale-x-100" />
+                  {totalItems > 0 && (
+                    <span className="absolute -right-4 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                      {totalItems}
+                    </span>
+                  )}
                 </span>
               </Link>
             </li>
@@ -133,9 +139,14 @@ export function NavHeader() {
           <Link
             href="/cart"
             aria-label="Voir le panier"
-            className="hidden md:flex items-center justify-center size-10 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+            className="hidden md:flex items-center justify-center size-10 rounded-lg text-muted-foreground hover:text-foreground transition-colors relative"
           >
             <ShoppingCart className="size-5" />
+            {totalItems > 0 && (
+              <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                {totalItems}
+              </span>
+            )}
           </Link>
           <Link
             href="/get-started"
