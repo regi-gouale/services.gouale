@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { Menu, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -113,10 +113,30 @@ export function NavHeader() {
                 </span>
               </Link>
             </li>
+            <li className="md:hidden">
+              <Link
+                href="/cart"
+                className="group flex items-center text-muted-foreground transition-colors hover:text-foreground"
+                aria-label="Voir le panier"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="relative flex items-center gap-2">
+                  <ShoppingCart className="size-5" />
+                  Panier
+                  <span className="absolute inset-x-0 -bottom-1 h-0.5 scale-x-0 bg-foreground transition-transform group-hover:scale-x-100" />
+                </span>
+              </Link>
+            </li>
           </ul>
         </nav>
         <div className="md:mt-0 md:flex md:items-center md:gap-4">
-          {/* <Button size="sm" asChild className="w-full md:w-auto"> */}
+          <Link
+            href="/cart"
+            aria-label="Voir le panier"
+            className="hidden md:flex items-center justify-center size-10 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ShoppingCart className="size-5" />
+          </Link>
           <Link
             href="/get-started"
             aria-label="Commencer avec nos services"
@@ -124,7 +144,6 @@ export function NavHeader() {
           >
             Commencer
           </Link>
-          {/* </Button> */}
         </div>
       </div>
     </header>
