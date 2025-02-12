@@ -4,7 +4,7 @@ import Link from "next/link";
 export function CTASection() {
   return (
     <section className="py-24">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto flex max-w-5xl flex-col items-center px-4 ">
         <div className="rounded-xl bg-primary p-8 text-center text-primary-foreground md:p-12 lg:p-16">
           <h2 className="font-poppins mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
             Prêt à Sublimer Votre Événement ?

@@ -21,7 +21,7 @@ export function FeatureCard({ title, description, icon }: FeatureCardProps) {
 export function FeaturesSection() {
   return (
     <section id="features" className="bg-muted/50 py-24">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto flex max-w-5xl flex-col items-center px-4 ">
         <h2 className="font-poppins mb-12 text-center text-3xl font-bold tracking-tight sm:text-4xl">
           Pourquoi Nous Choisir
         </h2>

@@ -38,7 +38,9 @@ export function HeroSection() {
                   raffinée
                 </p>
                 <div className="flex justify-center gap-4">
-                  <Button size="lg">Réserver Maintenant</Button>
+                  <Link href="/products">
+                    <Button size="lg">Découvrir Nos Produits</Button>
+                  </Link>
                   <Button variant="outline" size="lg">
                     En Savoir Plus
                   </Button>

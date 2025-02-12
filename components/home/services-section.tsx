@@ -20,7 +20,10 @@ export function ServiceCard({ title, description, icon }: ServiceCardProps) {
 
 export function ServicesSection() {
   return (
-    <section id="services" className="container mx-auto px-4 py-24">
+    <section
+      id="services"
+      className="container mx-auto flex max-w-5xl flex-col items-center px-4 py-24 "
+    >
       <h2 className="font-poppins mb-12 text-center text-3xl font-bold tracking-tight sm:text-4xl">
         Nos Services de Location
       </h2>
