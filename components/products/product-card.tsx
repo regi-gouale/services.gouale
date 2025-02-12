@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +11,7 @@ import {
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type ProductProps = {
   id: string;
@@ -27,6 +30,7 @@ export function ProductCard({ name, description, price, image }: ProductProps) {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // Add success notification logic here
+      toast.success(`"${name}" a été ajouté au panier`);
     } finally {
       setIsAdding(false);
     }
@@ -69,7 +73,7 @@ export function ProductCard({ name, description, price, image }: ProductProps) {
           <Button
             className="transition-transform hover:scale-105"
             onClick={handleAddToCart}
-            loading={isAdding}
+            disabled={isAdding}
             aria-label={`Ajouter ${name} au panier`}
           >
             <ShoppingCart className="mr-2 size-4" aria-hidden="true" />

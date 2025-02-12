@@ -5,17 +5,16 @@ import { HeroSection } from "@/components/home/hero-section";
 import { ServicesSection } from "@/components/home/services-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { NavHeader } from "@/components/nav-header";
-import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      <Link
+      {/* <Link
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-4"
       >
         Aller au contenu principal
-      </Link>
+      </Link> */}
       <NavHeader />
       <main id="main-content" className="min-h-screen">
         <HeroSection />

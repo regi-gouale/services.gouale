@@ -62,7 +62,7 @@ export function HeroSection() {
                       size="lg"
                       className="w-full transition-transform hover:scale-105 sm:w-auto"
                     >
-                      Découvrir Nos Produits
+                      Nos Produits
                     </Button>
                   </Link>
                   <Button

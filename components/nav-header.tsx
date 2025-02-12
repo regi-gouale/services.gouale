@@ -11,7 +11,7 @@ export function NavHeader() {
 
   return (
     <header
-      className="sticky-header w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center justify-center px-4 py-2 shadow-md z-40 h-16"
       role="banner"
     >
       {/* Backdrop for mobile menu */}
@@ -23,13 +23,13 @@ export function NavHeader() {
         />
       )}
 
-      <div className="container mx-4 flex h-16 items-center justify-between px-4 lg:mx-auto">
+      <div className="container mx-4 flex items-center justify-between px-4 lg:mx-auto">
         <Link
           href="/"
           className="relative z-50 flex items-baseline justify-self-auto transition-colors hover:text-primary"
           aria-label="Gouale Services - Retour à l'accueil"
         >
-          <span className="font-poppins text-xl font-semibold text-primary">
+          <span className={cn("text-xl font-black text-primary uppercase")}>
             Gouale
           </span>
           <span className="text-xs">Services</span>
@@ -70,7 +70,7 @@ export function NavHeader() {
               >
                 <span className="relative">
                   Services
-                  <span className="absolute inset-x-0 -bottom-1 h-0.5 scale-x-0 bg-foreground transition-transform group-hover:scale-x-100" />
+                  <span className="absolute inset-x-0 -bottom-1 h-0.5 scale-x-0 transition-transform group-hover:scale-x-100" />
                 </span>
               </Link>
             </li>
@@ -114,14 +114,18 @@ export function NavHeader() {
               </Link>
             </li>
           </ul>
-          <div className="mt-6 md:mt-0 md:flex md:items-center md:gap-4">
-            {/* <Button size="sm" asChild className="w-full md:w-auto"> */}
-            <Link href="/get-started" aria-label="Commencer avec nos services">
-              Commencer
-            </Link>
-            {/* </Button> */}
-          </div>
         </nav>
+        <div className="md:mt-0 md:flex md:items-center md:gap-4">
+          {/* <Button size="sm" asChild className="w-full md:w-auto"> */}
+          <Link
+            href="/get-started"
+            aria-label="Commencer avec nos services"
+            className="border border-primary text-primary px-4 py-2 rounded-lg text-sm uppercase font-bold"
+          >
+            Commencer
+          </Link>
+          {/* </Button> */}
+        </div>
       </div>
     </header>
   );
