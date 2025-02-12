@@ -63,7 +63,7 @@ export function NavHeader() {
           <ul className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
             <li>
               <Link
-                href="#services"
+                href="/#services"
                 className="group flex items-center text-muted-foreground transition-colors hover:text-foreground"
                 aria-label="Voir nos services"
                 onClick={() => setIsMenuOpen(false)}
@@ -76,7 +76,7 @@ export function NavHeader() {
             </li>
             <li>
               <Link
-                href="#features"
+                href="/#features"
                 className="group flex items-center text-muted-foreground transition-colors hover:text-foreground"
                 aria-label="Voir nos caractéristiques"
                 onClick={() => setIsMenuOpen(false)}
@@ -89,7 +89,7 @@ export function NavHeader() {
             </li>
             <li>
               <Link
-                href="#testimonials"
+                href="/#testimonials"
                 className="group flex items-center text-muted-foreground transition-colors hover:text-foreground"
                 aria-label="Voir les témoignages"
                 onClick={() => setIsMenuOpen(false)}
@@ -102,7 +102,7 @@ export function NavHeader() {
             </li>
             <li>
               <Link
-                href="#contact"
+                href="/#contact"
                 className="group flex items-center text-muted-foreground transition-colors hover:text-foreground"
                 aria-label="Nous contacter"
                 onClick={() => setIsMenuOpen(false)}
