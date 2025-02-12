@@ -24,7 +24,7 @@ export function CTASection() {
           <Link
             href="/get-started"
             aria-label="Commencer à planifier votre événement"
-            className="flex items-center justify-center"
+            className="bg-primary-foreground text-primary hover:bg-primary-foreground/50 hover:text-primary-foreground font-bold py-3 px-6 rounded-lg transition-transform hover:scale-105"
           >
             Planifier Votre Événement
           </Link>

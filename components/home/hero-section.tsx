@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -6,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,6 +26,13 @@ export function HeroSection() {
           align: "start",
           loop: true,
         }}
+        plugins={[
+          Autoplay({
+            delay: 5000,
+            stopOnInteraction: true,
+            stopOnMouseEnter: true,
+          }),
+        ]}
       >
         <CarouselContent className="h-full">
           <CarouselItem className="relative h-[80vh] w-full transition-opacity">
@@ -113,14 +123,13 @@ export function HeroSection() {
                       Découvrir Nos Produits
                     </Button>
                   </Link>
-                  <Button
-                    variant="outline"
-                    size="lg"
+                  <Link
+                    href="/#contact"
                     aria-label="Nous contacter pour plus d'informations"
-                    className="w-full transition-transform hover:scale-105 sm:w-auto"
+                    className="w-full transition-transform hover:scale-105 sm:w-auto text-center px-4 py-2 rounded-lg bg-primary-foreground shadow-md"
                   >
-                    Nous Contacter
-                  </Button>
+                    Contactez-nous
+                  </Link>
                 </div>
               </div>
             </div>
