@@ -1,5 +1,6 @@
 "use client";
 
+import { ReservationForm } from "@/components/cart/reservation-form";
 import { NavHeader } from "@/components/nav-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -76,7 +77,7 @@ export default function CartPage() {
                                 parseInt(e.target.value) || 0
                               )
                             }
-                            className="h-8 w-12 border-0 text-center [appearance:textfield]"
+                            className="h-8 w-24 border-0 text-center [appearance:textfield]"
                             aria-label="Quantité"
                           />
                           <Button
@@ -123,17 +124,22 @@ export default function CartPage() {
                 </div>
                 <div className="flex justify-between">
                   <span>Livraison</span>
-                  <span>Gratuite</span>
+                  <span>{formatCurrency(40)}</span>
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between font-semibold">
                     <span>Total</span>
-                    <span>{formatCurrency(getTotal())}</span>
+                    <span>{formatCurrency(getTotal() + 40)}</span>
                   </div>
                 </div>
               </div>
               {items.length > 0 && (
-                <Button className="mt-6 w-full">Passer à la commande</Button>
+                <div className="mt-6">
+                  <h3 className="font-poppins mb-4 text-lg font-medium">
+                    Dates de réservation
+                  </h3>
+                  <ReservationForm />
+                </div>
               )}
             </Card>
           </div>
