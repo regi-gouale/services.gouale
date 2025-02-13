@@ -1,6 +1,7 @@
 import { CartProvider } from "@/components/cart";
 import { PageTransition } from "@/components/page-transition";
 import type { Metadata, Viewport } from "next";
+import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -51,7 +52,9 @@ export default function RootLayout({
         <CartProvider>
           <div className="relative flex min-h-screen flex-col">
             <div className="flex-1">
-              <PageTransition>{children}</PageTransition>
+              <SessionProvider>
+                <PageTransition>{children}</PageTransition>
+              </SessionProvider>
             </div>
           </div>
         </CartProvider>

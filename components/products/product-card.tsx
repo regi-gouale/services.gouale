@@ -36,7 +36,7 @@ export function ProductCard({
             src={image}
             alt={name}
             fill
-            className="object-cover transition-transform hover:scale-105"
+            className="object-cover transition-transform hover:scale-105 rounded-lg"
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           />
         </div>

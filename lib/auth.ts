@@ -1,12 +1,17 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 // import { generateWelcomeEmail, sendEmail } from "./email";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { generateWelcomeEmail, sendEmail } from "./email";
 import { prisma } from "./prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  // adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
   providers: [
-    Google,
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     // CredentialsProvider({
     //   name: "credentials",
     //   credentials: {
@@ -60,12 +65,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             });
 
             if (!dbUser) {
-              // const welcomeEmail = generateWelcomeEmail(user.name || "");
-              // await sendEmail({
-              //   to: user.email,
-              //   subject: welcomeEmail.subject,
-              //   html: welcomeEmail.html,
-              // });
+              const welcomeEmail = generateWelcomeEmail(user.name || "");
+              await sendEmail({
+                to: user.email,
+                subject: welcomeEmail.subject,
+                html: welcomeEmail.html,
+              });
             }
           }
           return true;
@@ -82,7 +87,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/error",
   },
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
   secret: process.env.AUTH_SECRET,
 });

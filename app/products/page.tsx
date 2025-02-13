@@ -15,7 +15,7 @@ async function ProductsGrid() {
     >
       {products.map((product) => (
         <div key={product.id} role="gridcell">
-          <ProductCard {...product} />
+          <ProductCard {...product} image={product.image ?? undefined} />
         </div>
       ))}
     </div>

@@ -3,7 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { LogIn, Menu, User, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ const navigationLinks = [
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   // Close menu when route changes
   useEffect(() => {
@@ -81,6 +83,31 @@ export function MobileMenu() {
               {label}
             </Link>
           ))}
+          {session ? (
+            <Link
+              href="/dashboard/profile"
+              className={cn(
+                "text-lg font-medium transition-colors hover:text-primary mt-4 flex items-center gap-2",
+                pathname === "/dashboard/profile" && "text-primary"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
+              <User className="size-4" />
+              <span>{session.user?.name}</span>
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className={cn(
+                "text-lg font-medium transition-colors hover:text-primary mt-4 flex items-center gap-2",
+                pathname === "/login" && "text-primary"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
+              <LogIn className="size-4" />
+              <span>Connexion</span>
+            </Link>
+          )}
         </nav>
       </NavigationMenu>
     </>
