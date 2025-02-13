@@ -1,5 +1,6 @@
 "use client";
 
+import { GoogleIcon } from "@/components/icons/google";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -118,6 +119,7 @@ export default function LoginPage() {
                   }
                   disabled={isLoading}
                 >
+                  <GoogleIcon />
                   Google
                 </Button>
               </form>

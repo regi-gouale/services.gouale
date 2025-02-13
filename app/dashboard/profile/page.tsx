@@ -64,7 +64,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto mt-10">
+    <div className="space-y-6 mx-auto mt-10 flex flex-col justify-center max-w-5xl">
       <Card>
         <CardHeader>
           <CardTitle>Profil</CardTitle>

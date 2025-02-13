@@ -1,7 +1,19 @@
 "use client";
 
+import { Logo } from "@/components/icons/logo";
 import { SignOutButton } from "@/components/sign-out-button";
-import { cn } from "@/lib/utils";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { CalendarDays, Home, Settings, User } from "lucide-react";
 import { SessionProvider } from "next-auth/react";
 import Link from "next/link";
@@ -16,83 +28,90 @@ export default function DashboardLayout({
   const pathname = usePathname();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b backdrop-blur">
-        <div className="container flex h-14 items-center justify-between">
-          <div className="mr-4 flex">
+    <SidebarProvider defaultOpen>
+      <div className="flex min-h-screen w-full">
+        <Sidebar>
+          <SidebarHeader className="flex items-center justify-between">
             <Link
               href="/dashboard"
-              className="mr-6 flex items-center space-x-2"
+              className="flex items-center space-x-2 px-2"
             >
-              <span className="font-bold">Tableau de bord</span>
+              <Logo />
+              <SidebarTrigger />
             </Link>
-            <nav className="flex items-center space-x-6 text-sm font-medium">
-              <Link
-                href="/dashboard"
-                className={cn(
-                  "transition-colors hover:text-foreground/80",
-                  pathname === "/dashboard"
-                    ? "text-foreground"
-                    : "text-foreground/60"
-                )}
-              >
-                <span className="flex items-center gap-x-2">
-                  <Home className="size-4" />
-                  <span>Accueil</span>
-                </span>
-              </Link>
-              <Link
-                href="/dashboard/reservations"
-                className={cn(
-                  "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/dashboard/reservations")
-                    ? "text-foreground"
-                    : "text-foreground/60"
-                )}
-              >
-                <span className="flex items-center gap-x-2">
-                  <CalendarDays className="size-4" />
-                  <span>Réservations</span>
-                </span>
-              </Link>
-              <Link
-                href="/dashboard/profile"
-                className={cn(
-                  "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/dashboard/profile")
-                    ? "text-foreground"
-                    : "text-foreground/60"
-                )}
-              >
-                <span className="flex items-center gap-x-2">
-                  <User className="size-4" />
-                  <span>Profil</span>
-                </span>
-              </Link>
-              <Link
-                href="/dashboard/settings"
-                className={cn(
-                  "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/dashboard/settings")
-                    ? "text-foreground"
-                    : "text-foreground/60"
-                )}
-              >
-                <span className="flex items-center gap-x-2">
-                  <Settings className="size-4" />
-                  <span>Paramètres</span>
-                </span>
-              </Link>
-            </nav>
-          </div>
-          <SignOutButton />
-        </div>
-      </header>
-      <main className="flex-1 space-y-4 p-8 pt-6">
-        <Suspense fallback={<div className="animate-pulse">Chargement...</div>}>
-          <SessionProvider>{children}</SessionProvider>
-        </Suspense>
-      </main>
-    </div>
+          </SidebarHeader>
+
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === "/dashboard"}
+                    tooltip="Accueil"
+                  >
+                    <Link href="/dashboard">
+                      <Home className="size-4" />
+                      <span>Accueil</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname?.startsWith("/dashboard/reservations")}
+                    tooltip="Réservations"
+                  >
+                    <Link href="/dashboard/reservations">
+                      <CalendarDays className="size-4" />
+                      <span>Réservations</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname?.startsWith("/dashboard/profile")}
+                    tooltip="Profil"
+                  >
+                    <Link href="/dashboard/profile">
+                      <User className="size-4" />
+                      <span>Profil</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname?.startsWith("/dashboard/settings")}
+                    tooltip="Paramètres"
+                  >
+                    <Link href="/dashboard/settings">
+                      <Settings className="size-4" />
+                      <span>Paramètres</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroup>
+          </SidebarContent>
+
+          <SidebarFooter>
+            <SignOutButton className="w-full" />
+          </SidebarFooter>
+        </Sidebar>
+
+        <main className="flex-1 space-y-4 p-8 pt-6 w-full">
+          <Suspense
+            fallback={<div className="animate-pulse">Chargement...</div>}
+          >
+            <SessionProvider>{children}</SessionProvider>
+          </Suspense>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }

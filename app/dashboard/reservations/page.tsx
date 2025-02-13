@@ -59,7 +59,7 @@ export default function ReservationsPage() {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mx-auto mt-10 flex flex-col justify-center max-w-5xl">
       <Tabs defaultValue="upcoming" className="space-y-4">
         <TabsList>
           <TabsTrigger value="upcoming">À venir</TabsTrigger>

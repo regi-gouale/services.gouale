@@ -37,7 +37,7 @@ export default async function DashboardPage() {
   const stats = session?.user?.id ? await getStats(session.user.id) : null;
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-4 py-8 max-w-5xl">
       <h1 className="font-poppins mb-6 text-3xl font-bold">
         Bienvenue, {session?.user?.name}
       </h1>

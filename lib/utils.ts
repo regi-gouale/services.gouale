@@ -1,5 +1,3 @@
-"use client";
-
 import { clsx, type ClassValue } from "clsx";
 import { createContext, useContext, type Provider } from "react";
 import { twMerge } from "tailwind-merge";
@@ -43,10 +41,10 @@ export function isClient() {
 }
 
 export function createSafeContext<T>(defaultValue?: T) {
-  const Context = React.createContext<T | undefined>(defaultValue);
+  const Context = createContext<T | undefined>(defaultValue);
 
-  function useContext() {
-    const ctx = React.useContext(Context);
+  function useContext(Context: unknown): T {
+    const ctx = useContext(Context);
     if (ctx === undefined) {
       throw new Error("useContext must be used within a Provider");
     }
