@@ -21,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -54,6 +55,8 @@ export function ReservationForm() {
     },
   });
 
+  const { data: session } = useSession();
+
   // Update store when form values change
   useEffect(() => {
     const subscription = form.watch((value) => {
@@ -64,6 +67,11 @@ export function ReservationForm() {
 
   async function onSubmit(values: z.infer<typeof reservationSchema>) {
     try {
+      if (!session) {
+        router.push("/login");
+        return;
+      }
+
       setIsSubmitting(true);
       const response = await fetch("/api/reservations", {
         method: "POST",
@@ -90,7 +98,7 @@ export function ReservationForm() {
       clearCart();
       router.push("/dashboard/reservations");
     } catch (error) {
-      toast.error("Une erreur s'est produite. Veuillez réessayer.");
+      toast.error("Une erreur s'est produite. Veuillez réessayer. " + error);
     } finally {
       setIsSubmitting(false);
     }
