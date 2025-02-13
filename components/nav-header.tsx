@@ -3,7 +3,7 @@
 import { useCart } from "@/components/cart";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, ShoppingCart, X } from "lucide-react";
+import { LogIn, Menu, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ export function NavHeader() {
         <Button
           size="icon"
           variant="ghost"
-          className="relative z-50 md:hidden"
+          className="relative z-50 md:hidden hover:bg-primary/10 transition-colors"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-expanded={isMenuOpen}
           aria-controls="main-navigation"
@@ -139,9 +139,9 @@ export function NavHeader() {
                 aria-label="Se connecter"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="relative">
+                <span className="relative flex items-center gap-2">
+                  <LogIn className="size-5" />
                   Connexion
-                  <span className="absolute inset-x-0 -bottom-1 h-0.5 scale-x-0 bg-foreground transition-transform group-hover:scale-x-100" />
                 </span>
               </Link>
             </li>
@@ -151,14 +151,17 @@ export function NavHeader() {
           <Link
             href="/login"
             aria-label="Se connecter"
-            className="text-primary px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary/10 transition-colors"
+            className="hover:bg-primary/10 transition-colors rounded-lg flex items-center justify-center"
           >
-            Connexion
+            <LogIn className="size-10 p-2.5 md:hidden" />
+            <span className="hidden px-4 py-2 text-sm font-bold md:inline">
+              Connexion
+            </span>
           </Link>
           <Link
             href="/cart"
             aria-label="Voir le panier"
-            className="hidden md:flex items-center justify-center size-10 rounded-lg text-muted-foreground hover:text-foreground transition-colors relative"
+            className="hidden md:flex items-center justify-center size-6 rounded-lg text-muted-foreground hover:text-foreground transition-colors relative"
           >
             <ShoppingCart className="size-5" />
             {totalItems > 0 && (
