@@ -3,6 +3,7 @@
 import { SignOutButton } from "@/components/sign-out-button";
 import { cn } from "@/lib/utils";
 import { CalendarDays, Home, Settings, User } from "lucide-react";
+import { SessionProvider } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
@@ -89,7 +90,7 @@ export default function DashboardLayout({
       </header>
       <main className="flex-1 space-y-4 p-8 pt-6">
         <Suspense fallback={<div className="animate-pulse">Chargement...</div>}>
-          {children}
+          <SessionProvider>{children}</SessionProvider>
         </Suspense>
       </main>
     </div>

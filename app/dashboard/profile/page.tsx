@@ -1,10 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,35 +17,54 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-const profileSchema = z.object({
-  firstName: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
-  lastName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Veuillez saisir une adresse e-mail valide"),
+const profileFormSchema = z.object({
+  name: z.string().min(1, "Le nom est requis"),
+  email: z.string().email("Email invalide"),
 });
 
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
+
 export default function ProfilePage() {
-  const form = useForm<z.infer<typeof profileSchema>>({
-    resolver: zodResolver(profileSchema),
+  const { data: session, update } = useSession();
+
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
+      name: session?.user?.name || "",
+      email: session?.user?.email || "",
     },
   });
 
-  async function onSubmit(_values: z.infer<typeof profileSchema>) {
+  async function onSubmit(data: ProfileFormValues) {
     try {
-      // TODO: Implement profile update logic
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch("/api/user/profile", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      await update();
       toast.success("Profil mis à jour avec succès");
-    } catch {
-      toast.error("La mise à jour du profil a échoué");
+    } catch (error) {
+      console.error(error);
+      toast.error("Erreur lors de la mise à jour du profil");
     }
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="space-y-6 max-w-5xl mx-auto mt-10">
       <Card>
         <CardHeader>
           <CardTitle>Profil</CardTitle>
@@ -58,16 +72,16 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="firstName"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Prénom</FormLabel>
+                      <FormLabel>Nom</FormLabel>
                       <FormControl>
-                        <Input placeholder="Jean" {...field} />
+                        <Input placeholder="Votre nom" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -75,36 +89,25 @@ export default function ProfilePage() {
                 />
                 <FormField
                   control={form.control}
-                  name="lastName"
+                  name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nom</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Dupont" {...field} />
+                        <Input
+                          type="email"
+                          placeholder="votre@email.fr"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>E-mail</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="votre@email.fr"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Enregistrer les modifications</Button>
+              <Button type="submit" disabled={!form.formState.isDirty}>
+                Enregistrer les modifications
+              </Button>
             </form>
           </Form>
         </CardContent>

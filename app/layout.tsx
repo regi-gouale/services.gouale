@@ -1,5 +1,6 @@
 import { CartProvider } from "@/components/cart";
-import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -10,10 +11,31 @@ const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
-  title: "TableScape | Location d'Art de la Table",
+  title: {
+    default: "Gouale Services | Location d'Art de la Table",
+    template: "%s | Gouale Services",
+  },
   description:
     "L'art de la table, sans les contraintes. Location de vaisselle et accessoires pour vos événements.",
+  metadataBase: new URL("https://gouale.services"),
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    title: "Gouale Services",
+    description: "Location d'art de la table pour vos événements",
+    siteName: "Gouale Services",
+  },
 };
 
 export default function RootLayout({
@@ -23,22 +45,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
-        <meta
-          name="description"
-          content="Location de matériel et services pour vos événements"
-        />
-      </head>
       <body
         className={`min-h-screen bg-background antialiased ${poppins.variable}`}
       >
         <CartProvider>
           <div className="relative flex min-h-screen flex-col">
-            <div className="flex-1">{children}</div>
+            <div className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </div>
           </div>
         </CartProvider>
         <Toaster richColors position="top-center" />
