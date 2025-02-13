@@ -1,5 +1,3 @@
-import { ContactFormEmail } from "@/components/email/contact-form-email";
-import { render } from "@react-email/render";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -15,15 +13,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { name, email, message } = body;
+    const { to, fromName, subject, html } = body;
 
-    const emailHtml = await render(ContactFormEmail({ name, email, message }));
+    // const emailHtml = await render(ContactFormEmail({ name, email, message }));
 
     const response = await resend.emails.send({
-      from: "Contact Form <no-reply@gouale.com>",
-      to: "contact@gouale.com",
-      subject: `Nouveau message de contact de ${name}`,
-      html: emailHtml,
+      from: fromName,
+      to: to,
+      subject: subject,
+      html: html,
     });
 
     return NextResponse.json(

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { sendContactEmail } from "@/lib/email";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -38,20 +39,30 @@ export function ContactForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("/api/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      // const response = await fetch("/api/send", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(values),
+      // });
 
-      if (!response.ok) {
-        throw new Error("Failed to send message");
+      // if (!response.ok) {
+      //   throw new Error("Failed to send message");
+      // }
+      toast.info(`Envoi du message de ${values.name} en cours...`);
+      const response = await sendContactEmail(
+        values.name,
+        values.email,
+        values.message
+      );
+
+      if (!response.success) {
+        throw new Error(response.error || "Failed to send email");
       }
 
       toast.success(
-        "Message envoyé avec succès ! Nous vous répondrons bientôt."
+        `Message envoyé avec succès ! Nous vous répondrons bientôt. ${values.message}`
       );
       form.reset();
     } catch (error) {

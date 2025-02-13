@@ -15,6 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { sendReservationEmails } from "@/lib/email";
 import { useCart } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,7 +68,7 @@ export function ReservationForm() {
 
   async function onSubmit(values: z.infer<typeof reservationSchema>) {
     try {
-      if (!session) {
+      if (!session?.user) {
         router.push("/login");
         return;
       }
@@ -93,9 +94,23 @@ export function ReservationForm() {
       if (!response.ok) {
         throw new Error("Failed to create reservation");
       }
+      const responseData = await response.json();
 
-      toast.success("Votre réservation a été créée avec succès!");
       clearCart();
+      if (!session.user?.email) {
+        throw new Error("User email not found");
+      }
+      await sendReservationEmails(
+        session.user.email,
+        session.user.name || "Client",
+        {
+          id: responseData.id,
+          startDate: values.startDate,
+          endDate: values.endDate,
+          items: items,
+        }
+      );
+      toast.success("Votre réservation a été créée avec succès!");
       router.push("/dashboard/reservations");
     } catch (error) {
       toast.error("Une erreur s'est produite. Veuillez réessayer. " + error);

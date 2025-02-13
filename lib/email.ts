@@ -1,44 +1,76 @@
-// import nodemailer from "nodemailer";
-
-// const transporter = nodemailer.createTransport({
-//   host: process.env.EMAIL_SERVER_HOST,
-//   port: parseInt(process.env.EMAIL_SERVER_PORT || "587"),
-//   auth: {
-//     user: process.env.EMAIL_SERVER_USER,
-//     pass: process.env.EMAIL_SERVER_PASSWORD,
-//   },
-// });
-
 interface SendEmailParams {
   to: string;
+  fromName: string;
   subject: string;
   html: string;
 }
 
-export async function sendEmail({ to, subject, html }: SendEmailParams) {
+export async function sendEmail({
+  to,
+  fromName,
+  subject,
+  html,
+}: SendEmailParams) {
   try {
-    // await transporter.sendMail({
-    //   from: process.env.EMAIL_FROM,
-    //   to,
-    //   subject,
-    //   html,
-    // });
-    const response = await fetch("/api/send-email", {
+    const response = await fetch("/api/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ to, subject, html }),
+      body: JSON.stringify({ to, fromName, subject, html }),
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Network response was not ok");
     }
     return { success: true };
-  } catch (error) {
+  } catch (error: Error | any) {
     console.error("Failed to send email:", error);
-    return { success: false, error };
+    return { success: false, error: error.message };
   }
+}
+
+export function generateContactEmail(
+  name: string,
+  email: string,
+  message: string
+) {
+  return {
+    to: "regi.leslie.gouale@gmail.com",
+    fromName: "Gouale Services <noreply@gouale.com>",
+    subject: "Nouveau message de contact - Gouale Services",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1 style="color: #333;">Nouveau message de contact</h1>
+        <div style="background-color: #f5f5f5; padding: 16px; border-radius: 4px; margin: 16px 0;">
+          <p><strong>Nom :</strong> ${name}</p>
+          <p><strong>Email :</strong> ${email}</p>
+          <p><strong>Message :</strong></p>
+          <p style="white-space: pre-wrap;">${message}</p>
+        </div>
+        <hr style="margin: 24px 0; border: none; border-top: 1px solid #eaeaea;" />
+        <p style="color: #666; font-size: 14px;">
+          Gouale Services - Location d'Art de la Table<br />
+          Message reçu via le formulaire de contact
+        </p>
+      </div>
+    `,
+  };
+}
+
+export async function sendContactEmail(
+  name: string,
+  email: string,
+  message: string
+) {
+  const emailContent = generateContactEmail(name, email, message);
+  return sendEmail({
+    to: emailContent.to,
+    fromName: emailContent.fromName,
+    subject: emailContent.subject,
+    html: emailContent.html,
+  });
 }
 
 export function generatePasswordResetEmail(resetToken: string) {
@@ -65,8 +97,10 @@ export function generatePasswordResetEmail(resetToken: string) {
   };
 }
 
-export function generateWelcomeEmail(name: string) {
+export function generateWelcomeEmail(name: string, email: string) {
   return {
+    to: email,
+    fromName: "Gouale Services <noreply@gouale.com>",
     subject: "Bienvenue chez Gouale Services !",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -85,6 +119,16 @@ export function generateWelcomeEmail(name: string) {
       </div>
     `,
   };
+}
+
+export async function sendWelcomeEmail(name: string, email: string) {
+  const emailContent = generateWelcomeEmail(name, email);
+  return sendEmail({
+    to: emailContent.to,
+    fromName: emailContent.fromName,
+    subject: emailContent.subject,
+    html: emailContent.html,
+  });
 }
 
 export function generateReservationConfirmationEmail(
@@ -124,4 +168,88 @@ export function generateReservationConfirmationEmail(
       </div>
     `,
   };
+}
+
+export function generateReservationAdminNotificationEmail(
+  customerName: string,
+  reservationDetails: {
+    id: string;
+    startDate: Date;
+    endDate: Date;
+    items: any[];
+  }
+) {
+  const formatter = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "long",
+  });
+
+  return {
+    subject: "Nouvelle réservation - Gouale Services",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1 style="color: #333;">Nouvelle réservation reçue</h1>
+        <p>Une nouvelle réservation a été effectuée par ${customerName}.</p>
+        <div style="background-color: #f5f5f5; padding: 16px; border-radius: 4px; margin: 16px 0;">
+          <p><strong>Numéro de réservation :</strong> ${reservationDetails.id}</p>
+          <p><strong>Date de début :</strong> ${formatter.format(reservationDetails.startDate)}</p>
+          <p><strong>Date de fin :</strong> ${formatter.format(reservationDetails.endDate)}</p>
+          <p><strong>Articles réservés :</strong> ${reservationDetails.items.length}</p>
+        </div>
+        <a href="${process.env.NEXTAUTH_URL}/dashboard/reservations/${reservationDetails.id}" style="display: inline-block; padding: 12px 24px; background-color: #0070f3; color: white; text-decoration: none; border-radius: 4px; margin: 16px 0;">
+          Voir les détails de la réservation
+        </a>
+        <hr style="margin: 24px 0; border: none; border-top: 1px solid #eaeaea;" />
+        <p style="color: #666; font-size: 14px;">
+          Gouale Services - Location d'Art de la Table<br />
+          Notification automatique de nouvelle réservation
+        </p>
+      </div>
+    `,
+  };
+}
+
+export async function sendReservationEmails(
+  customerEmail: string,
+  customerName: string,
+  reservationDetails: {
+    id: string;
+    startDate: Date;
+    endDate: Date;
+    items: any[];
+  }
+) {
+  // Send confirmation email to customer
+  const customerEmailContent = generateReservationConfirmationEmail(
+    customerName,
+    reservationDetails
+  );
+  await sendEmail({
+    to: customerEmail,
+    fromName: customerName,
+    subject: customerEmailContent.subject,
+    html: customerEmailContent.html,
+  });
+
+  // Send notification emails to admins
+  const adminEmailContent = generateReservationAdminNotificationEmail(
+    customerName,
+    reservationDetails
+  );
+  const adminEmails = [
+    "regi.leslie.gouale@gmail.com",
+    "noreply-services@gouale.com",
+  ];
+
+  await Promise.all(
+    adminEmails.map((adminEmail) =>
+      sendEmail({
+        to: adminEmail,
+        fromName: "Administrateur",
+        subject: adminEmailContent.subject,
+        html: adminEmailContent.html,
+      })
+    )
+  );
+
+  return { success: true };
 }

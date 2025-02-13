@@ -1,9 +1,10 @@
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-// import { generateWelcomeEmail, sendEmail } from "./email";
+import { sendWelcomeEmail } from "@/lib/email";
+import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { generateWelcomeEmail, sendEmail } from "./email";
-import { prisma } from "./prisma";
+import { compare } from "bcryptjs";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -12,38 +13,41 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    // CredentialsProvider({
-    //   name: "credentials",
-    //   credentials: {
-    //     email: { label: "Email", type: "email" },
-    //     password: { label: "Password", type: "password" },
-    //   },
-    //   async authorize(credentials) {
-    //     if (!credentials?.email || !credentials?.password) {
-    //       throw new Error("Email and password required");
-    //     }
+    Credentials({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email and password required");
+        }
 
-    //     const user = await prisma.user.findUnique({
-    //       where: { email: credentials.email },
-    //     });
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email as string },
+        });
 
-    //     if (!user || !user.password) {
-    //       throw new Error("Email not found");
-    //     }
+        if (!user || !user.password) {
+          throw new Error("Email not found");
+        }
 
-    //     const isValid = await compare(credentials.password, user.password);
+        const isValid = await compare(
+          credentials.password as string,
+          user.password
+        );
 
-    //     if (!isValid) {
-    //       throw new Error("Invalid password");
-    //     }
+        if (!isValid) {
+          throw new Error("Invalid password");
+        }
 
-    //     return {
-    //       id: user.id,
-    //       email: user.email,
-    //       name: user.name,
-    //     };
-    //   },
-    // }),
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        };
+      },
+    }),
   ],
   callbacks: {
     async session({ session, user }) {
@@ -65,12 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             });
 
             if (!dbUser) {
-              const welcomeEmail = generateWelcomeEmail(user.name || "");
-              await sendEmail({
-                to: user.email,
-                subject: welcomeEmail.subject,
-                html: welcomeEmail.html,
-              });
+              await sendWelcomeEmail(user.name || "", user.email);
             }
           }
           return true;
