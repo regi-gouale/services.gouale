@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart } from "@/components/cart";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useCart } from "@/lib/cart";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";

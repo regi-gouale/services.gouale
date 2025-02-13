@@ -1,4 +1,4 @@
-import { CartProvider } from "@/lib/cart";
+import { CartProvider } from "@/components/cart";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";

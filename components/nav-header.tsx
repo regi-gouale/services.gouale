@@ -1,7 +1,7 @@
 "use client";
 
+import { useCart } from "@/components/cart";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/lib/cart";
 import { cn } from "@/lib/utils";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
@@ -26,17 +26,6 @@ export function NavHeader() {
       )}
 
       <div className="container mx-4 flex items-center justify-between px-4 lg:mx-auto">
-        <Link
-          href="/"
-          className="relative z-50 flex items-baseline justify-self-auto transition-colors hover:text-primary"
-          aria-label="Gouale Services - Retour à l'accueil"
-        >
-          <span className={cn("text-xl font-black text-primary uppercase")}>
-            Gouale
-          </span>
-          <span className="text-xs">Services</span>
-        </Link>
-
         <Button
           size="icon"
           variant="ghost"
@@ -52,6 +41,16 @@ export function NavHeader() {
             <Menu className="size-6 transition-transform animate-in fade-in-0 zoom-in-0" />
           )}
         </Button>
+        <Link
+          href="/"
+          className="relative z-50 flex items-baseline justify-self-auto transition-colors hover:text-primary"
+          aria-label="Gouale Services - Retour à l'accueil"
+        >
+          <span className={cn("text-xl font-black text-primary uppercase")}>
+            Gouale
+          </span>
+          <span className="text-xs">Services</span>
+        </Link>
 
         <nav
           id="main-navigation"
@@ -133,9 +132,29 @@ export function NavHeader() {
                 </span>
               </Link>
             </li>
+            <li className="md:hidden">
+              <Link
+                href="/login"
+                className="group flex items-center text-muted-foreground transition-colors hover:text-foreground"
+                aria-label="Se connecter"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="relative">
+                  Connexion
+                  <span className="absolute inset-x-0 -bottom-1 h-0.5 scale-x-0 bg-foreground transition-transform group-hover:scale-x-100" />
+                </span>
+              </Link>
+            </li>
           </ul>
         </nav>
         <div className="md:mt-0 md:flex md:items-center md:gap-4">
+          <Link
+            href="/login"
+            aria-label="Se connecter"
+            className="text-primary px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary/10 transition-colors"
+          >
+            Connexion
+          </Link>
           <Link
             href="/cart"
             aria-label="Voir le panier"
@@ -147,13 +166,6 @@ export function NavHeader() {
                 {totalItems}
               </span>
             )}
-          </Link>
-          <Link
-            href="/get-started"
-            aria-label="Commencer avec nos services"
-            className="border border-primary text-primary px-4 py-2 rounded-lg text-sm uppercase font-bold"
-          >
-            Commencer
           </Link>
         </div>
       </div>
