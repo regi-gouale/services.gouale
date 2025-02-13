@@ -17,7 +17,7 @@ export default function CartPage() {
   return (
     <>
       <NavHeader />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8" suppressHydrationWarning>
         <h1 className="font-poppins mb-8 text-3xl font-bold">Votre Panier</h1>
 
         <div className="grid gap-8 lg:grid-cols-[1fr,400px]">

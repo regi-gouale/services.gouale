@@ -1,12 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -24,9 +17,15 @@ import {
 } from "@/components/ui/popover";
 import { useCart } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import * as z from "zod";
 
 const reservationSchema = z
   .object({
@@ -44,12 +43,24 @@ const reservationSchema = z
 
 export function ReservationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { items, clearCart } = useCart();
+  const { items, clearCart, startDate, endDate, setDates } = useCart();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof reservationSchema>>({
     resolver: zodResolver(reservationSchema),
+    defaultValues: {
+      startDate: startDate || undefined,
+      endDate: endDate || undefined,
+    },
   });
+
+  // Update store when form values change
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      setDates(value.startDate || null, value.endDate || null);
+    });
+    return () => subscription.unsubscribe();
+  }, [form.watch, setDates]);
 
   async function onSubmit(values: z.infer<typeof reservationSchema>) {
     try {
