@@ -1,5 +1,6 @@
 "use client";
 
+import { ReservationDetailsDialog } from "@/components/reservations/reservation-details-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -33,6 +34,9 @@ export default function ReservationsPage() {
   >([]);
   const [pastReservations, setPastReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedReservation, setSelectedReservation] =
+    useState<Reservation | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   useEffect(() => {
     async function fetchReservations() {
@@ -58,8 +62,18 @@ export default function ReservationsPage() {
     fetchReservations();
   }, []);
 
+  const handleViewDetails = (reservation: Reservation) => {
+    setSelectedReservation(reservation);
+    setIsDetailsOpen(true);
+  };
+
   return (
     <div className="space-y-6 mx-auto mt-10 flex flex-col justify-center max-w-5xl">
+      <ReservationDetailsDialog
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        reservation={selectedReservation}
+      />
       <Tabs defaultValue="upcoming" className="space-y-4">
         <TabsList>
           <TabsTrigger value="upcoming">À venir</TabsTrigger>
@@ -110,9 +124,7 @@ export default function ReservationsPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => {
-                              /* TODO: Implement view details */
-                            }}
+                            onClick={() => handleViewDetails(reservation)}
                           >
                             Voir les détails
                           </Button>
@@ -170,9 +182,7 @@ export default function ReservationsPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => {
-                              /* TODO: Implement view details */
-                            }}
+                            onClick={() => handleViewDetails(reservation)}
                           >
                             Voir les détails
                           </Button>

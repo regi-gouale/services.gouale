@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface SignOutButtonProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -24,9 +26,10 @@ export function SignOutButton({ className, ...props }: SignOutButtonProps) {
     setIsLoading(true);
     try {
       // Add sign out logic here
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
-      console.error("Error signing out:", error);
+      await signOut();
+      toast.success("Déconnexion réussie !");
+    } catch (error: Error | any) {
+      toast.error(`Une erreur s'est produite: ${error.message}`);
     } finally {
       setIsLoading(false);
       setIsOpen(false);
@@ -53,7 +56,7 @@ export function SignOutButton({ className, ...props }: SignOutButtonProps) {
               Êtes-vous sûr de vouloir vous déconnecter ?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="justify-end gap-4">
             <Button
               variant="outline"
               onClick={() => setIsOpen(false)}
@@ -63,7 +66,11 @@ export function SignOutButton({ className, ...props }: SignOutButtonProps) {
             </Button>
             <Button
               variant="destructive"
-              onClick={handleSignOut}
+              onClick={() =>
+                signOut({
+                  redirectTo: "/",
+                })
+              }
               disabled={isLoading}
             >
               Se déconnecter
