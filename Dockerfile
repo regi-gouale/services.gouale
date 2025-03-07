@@ -1,58 +1,56 @@
+# Base image
 FROM node:20-alpine AS base
-
-# Install dependencies only when needed
-FROM base AS deps
 WORKDIR /app
 
-# Install pnpm directly instead of using corepack
+# Dependencies image
+FROM base AS deps
 RUN npm install -g pnpm
-
-# Files required by pnpm install
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# Rebuild the source code only when needed
+# Builder image
 FROM base AS builder
-WORKDIR /app
-
-# Install pnpm directly
 RUN npm install -g pnpm
-
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Generate Prisma Client
-RUN npx prisma generate
-
-# Disable telemetry during the build
-ENV NEXT_TELEMETRY_DISABLED 1
-
+RUN pnpm dlx prisma generate
 RUN pnpm run build
 
-# Production image, copy all the files and run next
+# Runner image
 FROM base AS runner
+RUN npm install -g pnpm
+
+# Create non-root user
+# RUN addgroup --system --gid 1001 nodejs
+# RUN adduser --system --uid 1001 nextjs
+
+# Set working directory
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Copy built files
+# Copy built application
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Copy prisma schema and migrations (needed for production)
+COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package.json ./package.json
+# Copy next.config.js only if it exists
+COPY --from=builder /app/next.config.* ./
 
-USER nextjs
+# Copy necessary node modules
+COPY --from=builder /app/node_modules ./node_modules
 
+# Copy docker entrypoint script
+COPY docker-entrypoint.sh ./
+RUN chmod +x ./docker-entrypoint.sh
+
+# Switch to non-root user
+# USER nextjs
+
+# Expose port
 EXPOSE 3000
 
+# Environment variables
 ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV NODE_ENV production
 
-# Add prisma generate to startup command to ensure client is available
-CMD ["node", "server.js"]
+# Start command
+ENTRYPOINT ["/app/docker-entrypoint.sh"]

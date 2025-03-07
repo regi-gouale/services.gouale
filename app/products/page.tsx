@@ -2,6 +2,7 @@ import { NavHeader } from "@/components/nav-header";
 import { ProductCard } from "@/components/products/product-card";
 import { ProductsGridSkeleton } from "@/components/products/product-skeleton";
 import { getProducts } from "@/lib/products";
+import { type Product } from "@prisma/client";
 import { Suspense } from "react";
 
 async function ProductsGrid() {
@@ -13,7 +14,7 @@ async function ProductsGrid() {
       role="grid"
       aria-label="Liste des produits"
     >
-      {products.map((product) => (
+      {products.map((product: Product) => (
         <div key={product.id} role="gridcell">
           <ProductCard {...product} image={product.image ?? undefined} />
         </div>

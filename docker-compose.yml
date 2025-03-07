@@ -1,46 +1,19 @@
-version: "3.8"
-
 services:
-  web:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
     env_file:
       - .env
-      - .env.local
     environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - NODE_ENV=production
-      - NEXTAUTH_URL=${NEXTAUTH_URL}
-      - AUTH_SECRET=${AUTH_SECRET}
-      - PORT=3000
-      - HOSTNAME=0.0.0.0
-      - EMAIL_FROM=${EMAIL_FROM}
-      - NODE_ENV=${NODE_ENV}
-
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: unless-stopped
-
-  db:
-    image: postgres:16-alpine
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: production
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=services_gouale
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - "3000:3000"
     restart: unless-stopped
+    networks:
+      - app-network
 
-volumes:
-  postgres_data:
+networks:
+  app-network:
+    driver: bridge

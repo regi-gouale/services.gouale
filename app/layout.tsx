@@ -2,12 +2,12 @@ import { CartProvider } from "@/components/cart";
 import { PageTransition } from "@/components/page-transition";
 import type { Metadata, Viewport } from "next";
 import { SessionProvider } from "next-auth/react";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`min-h-screen bg-background antialiased ${poppins.variable}`}
+        className={`min-h-screen bg-background antialiased ${inter.variable}`}
       >
         <CartProvider>
           <div className="relative flex min-h-screen flex-col">
