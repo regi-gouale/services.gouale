@@ -1,3 +1,5 @@
+import { headers } from "next/headers";
+
 interface SendEmailParams {
   to: string;
   fromName: string;
@@ -121,14 +123,50 @@ export function generateWelcomeEmail(name: string, email: string) {
   };
 }
 
-export async function sendWelcomeEmail(name: string, email: string) {
-  const emailContent = generateWelcomeEmail(name, email);
-  return sendEmail({
-    to: emailContent.to,
-    fromName: emailContent.fromName,
-    subject: emailContent.subject,
-    html: emailContent.html,
-  });
+/**
+ * Envoie un email de bienvenue à un nouvel utilisateur
+ * @param name Le nom de l'utilisateur
+ * @param email L'adresse email de l'utilisateur
+ */
+export async function sendWelcomeEmail(
+  name: string,
+  email: string
+): Promise<void> {
+  try {
+    // Récupération de l'hôte pour construire l'URL complète
+    const headersList = await headers();
+    const host =
+      headersList.get("host") ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      "localhost:3000";
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const baseUrl = `${protocol}://${host}`;
+
+    // Appel à l'API d'envoi d'email avec une URL absolue
+    const response = await fetch(`${baseUrl}/api/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: email,
+        subject: "Bienvenue sur Gouale Services",
+        template: "welcome",
+        data: {
+          name,
+          email,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Échec de l'envoi d'email: ${error}`);
+    }
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    throw error;
+  }
 }
 
 export function generateReservationConfirmationEmail(
