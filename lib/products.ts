@@ -14,7 +14,7 @@ export interface Product {
 export async function getProducts() {
   return prisma.product.findMany({
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
   });
 }
