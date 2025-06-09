@@ -5,14 +5,48 @@ import { NavHeader } from "@/components/nav-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { getProduct } from "@/lib/products";
 import { useCart } from "@/lib/store";
 import { formatCurrency } from "@/lib/utils";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, getTotal } = useCart();
+  const { items, removeItem, updateQuantity, getTotal, addItem } = useCart();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const productId = searchParams.get("productId");
+    const action = searchParams.get("action");
+
+    if (productId && action === "add") {
+      // Appeler une fonction asynchrone à l'intérieur de useEffect
+      const fetchProductAndAddToCart = async () => {
+        try {
+          const product = await getProduct(productId);
+          if (product) {
+            addItem({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              quantity: 1,
+              image: product.image || undefined,
+            });
+            toast.success("Produit ajouté au panier");
+          }
+        } catch (error) {
+          console.error("Erreur lors de l'ajout au panier:", error);
+          toast.error("Erreur lors de l'ajout du produit au panier");
+        }
+      };
+
+      fetchProductAndAddToCart();
+    }
+  }, [searchParams, addItem]);
 
   return (
     <>

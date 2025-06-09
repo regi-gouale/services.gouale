@@ -7,6 +7,7 @@ import { useCart } from "@/lib/store";
 import { formatCurrency } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface ProductCardProps extends Product {
@@ -22,14 +23,25 @@ export function ProductCard({
   featured,
 }: ProductCardProps) {
   const addItem = useCart((state) => state.addItem);
+  const router = useRouter();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Empêcher la navigation lors du clic sur le bouton
     addItem({ id, name, price, quantity: 1, image });
     toast.success("Produit ajouté au panier");
   };
 
+  const handleCardClick = () => {
+    router.push(`/products/${id}`);
+  };
+
   return (
-    <Card className={featured ? "border-primary" : undefined}>
+    <Card
+      className={`${
+        featured ? "border-primary" : ""
+      } cursor-pointer transition-shadow hover:shadow-md`}
+      onClick={handleCardClick}
+    >
       {image && (
         <div className="relative aspect-[4/3] overflow-hidden">
           <Image
