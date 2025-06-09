@@ -1,8 +1,10 @@
 import { CartProvider } from "@/components/cart";
 import { PageTransition } from "@/components/page-transition";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { Metadata, Viewport } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -49,16 +51,42 @@ export default function RootLayout({
       <body
         className={`min-h-screen bg-background antialiased ${inter.variable}`}
       >
-        <CartProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <div className="flex-1">
-              <SessionProvider>
-                <PageTransition>{children}</PageTransition>
-              </SessionProvider>
+        <Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="space-y-4 text-center">
+                <Skeleton className="h-8 w-32 mx-auto" />
+                <Skeleton className="h-4 w-48 mx-auto" />
+                <div className="flex justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              </div>
             </div>
-          </div>
-        </CartProvider>
-        <Toaster richColors position="top-center" />
+          }
+        >
+          <SessionProvider>
+            <Suspense
+              fallback={
+                <div className="min-h-screen flex items-center justify-center">
+                  <div className="space-y-4">
+                    <Skeleton className="h-20 w-full" />
+                    <Skeleton className="h-96 w-full" />
+                    <Skeleton className="h-32 w-full" />
+                  </div>
+                </div>
+              }
+            >
+              <CartProvider>
+                <Suspense
+                  fallback={<div className="min-h-screen bg-background" />}
+                >
+                  <PageTransition>{children}</PageTransition>
+                </Suspense>
+                <Toaster />
+              </CartProvider>
+            </Suspense>
+          </SessionProvider>
+        </Suspense>
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import { NavHeader } from "@/components/nav-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getProduct } from "@/lib/products";
 import { useCart } from "@/lib/store";
 import { formatCurrency } from "@/lib/utils";
@@ -12,7 +13,7 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { toast } from "sonner";
 
 export default function CartPage() {
@@ -50,7 +51,22 @@ export default function CartPage() {
 
   return (
     <>
-      <NavHeader />
+      <Suspense
+        fallback={
+          <div className="sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center justify-center px-4 py-2 shadow-md z-40 h-16">
+            <div className="container mx-4 flex items-center justify-between px-4 md:mx-auto">
+              <Skeleton className="h-8 w-24" />
+              <Skeleton className="h-8 w-32" />
+              <div className="flex gap-2">
+                <Skeleton className="h-8 w-8" />
+                <Skeleton className="h-8 w-8" />
+              </div>
+            </div>
+          </div>
+        }
+      >
+        <NavHeader />
+      </Suspense>
       <main className="container mx-auto px-4 py-8" suppressHydrationWarning>
         <h1 className="font-poppins mb-8 text-3xl font-bold">Votre Panier</h1>
 
@@ -172,7 +188,23 @@ export default function CartPage() {
                   <h3 className="font-poppins mb-4 text-lg font-medium">
                     Dates de réservation
                   </h3>
-                  <ReservationForm />
+                  <Suspense
+                    fallback={
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-24" />
+                          <Skeleton className="h-10 w-full" />
+                        </div>
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-24" />
+                          <Skeleton className="h-10 w-full" />
+                        </div>
+                        <Skeleton className="h-10 w-full" />
+                      </div>
+                    }
+                  >
+                    <ReservationForm />
+                  </Suspense>
                 </div>
               )}
             </Card>
